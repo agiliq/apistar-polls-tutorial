@@ -6,6 +6,8 @@ This tutorial is meant for those, who have basic knowledge of Django and have do
 
 **Note:** Use Pyhton 3+ for whole tutorial.
 
+**Apistar:** https://github.com/tomchristie/apistar
+ 
 ---
 # Features
 
@@ -23,4 +25,28 @@ be in sync with your codebase.
 # Table of Contents
 
 - [Apistar Installation](#apistar)
+- [Create new Project](#newproject)
+
+# Apistar Installation
+
+    $ pip3 install apistar
+
+If its not working, then check your python version. It works with Python 3 and higher.
+
+Check Installation:
+
+    $ apistar --version
+    0.1.17
+
+# Create new project
+
+    $ mkdir apistar_demo
+    $ cd apistar_demo
+    $ apistar new .
+
+This will create a new project directory in your current working directory.
+The directory looks like:
+
+![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/dir.png)
+
 
