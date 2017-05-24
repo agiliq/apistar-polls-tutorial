@@ -4,7 +4,7 @@ This tutorial is meant for those, who have basic knowledge of Django and have do
 
 **Refer:** https://docs.djangoproject.com/en/1.11/intro/tutorial01/
 
-**Note:** Use Pyhton 3+ for whole tutorial.
+**Note:** Use Python 3+ for whole tutorial.
 
 **Apistar:** https://github.com/tomchristie/apistar
  
@@ -26,6 +26,8 @@ be in sync with your codebase.
 
 - [Apistar Installation](#apistar)
 - [Create new Project](#newproject)
+- [Run Project](#runproject)
+- [Database configuration](#database)
 
 # Apistar Installation
 
@@ -49,4 +51,23 @@ The directory looks like:
 
 ![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/dir.png)
 
+# Run Project
 
+    $ apistar run
+    Starting up...
+    * Running on http://localhost:8080/ (Press CTRL+C to quit)
+    * Restarting with stat
+    * Debugger is active!
+    * Debugger PIN: 325-680-236
+
+![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/screen1.png)
+
+For running project in different port and host use
+    $ apistar run --port <someport> --host <somehost>
+    
+# Database Configuration
+
+For doing database related stuff, you need to install sqlalchemy.
+
+    $ pip install sqlalchemy
+    
