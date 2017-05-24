@@ -26,6 +26,7 @@ be in sync with your codebase.
 
 - [Apistar Installation](#apistar)
 - [Create new Project](#newproject)
+- [Apistar Architecture](#apistar_architecture)
 - [Run Project](#runproject)
 - [Database configuration](#database)
 
@@ -51,6 +52,20 @@ The directory looks like:
 
 ![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/dir.png)
 
+# Apistar Architecture
+
+You get few files when you start a new project using Apistar namely:
+
+**app.py:** Present in the same directory as of your project, you need to write all settings related stuff here.
+
+**routes.py:** Similar to urls.py in django we have routes in Apistar, any request coming to the application goes via., routes.
+
+**views.py:** All the logical implementation is being done in this file. 
+
+**test_app.py:** Apistar comes well equipped with the TDD (Test Driven Development)
+
+**Note** We will be making some new files as per our requirement further. Like models.py for db related stuff.
+
 # Run Project
 
     $ apistar run
@@ -63,6 +78,7 @@ The directory looks like:
 ![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/screen1.png)
 
 For running project in different port and host use
+    
     $ apistar run --port <someport> --host <somehost>
     
 # Database Configuration
@@ -70,4 +86,8 @@ For running project in different port and host use
 For doing database related stuff, you need to install sqlalchemy.
 
     $ pip install sqlalchemy
+
+We will be using, SQLite for our tutorial, though apistar supports postgres and MySQL as well.
+
+
     
