@@ -64,7 +64,7 @@ You get few files when you start a new project using Apistar namely:
 
 **test_app.py:** Apistar comes well equipped with the TDD (Test Driven Development)
 
-**Note** We will be making some new files as per our requirement further. Like models.py for db related stuff.
+**Note** We will be creating some new files as per our requirement further. Like models.py for db related stuff.
 
 # Run Project
 
@@ -88,6 +88,54 @@ For doing database related stuff, you need to install sqlalchemy.
     $ pip install sqlalchemy
 
 We will be using, SQLite for our tutorial, though apistar supports postgres and MySQL as well.
+
+Step 1: Create a new file in your project directory and name it as models.py and paste the code present below:
+    
+    from sqlalchemy.sql import func
+    import datetime
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy.orm import relationship
+    from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+
+    Base = declarative_base()
+
+    class Poll(Base):
+	    __tablename__ = "Poll"
+	    id = Column(Integer, primary_key=True)
+	    question = Column(String)
+	    pub_date = Column(DateTime(timezone=True), default=func.now())
+	    # Gives the flexibilty to access child table's object.
+	    choice = relationship("Choice")
+
+    class Choice(Base):
+	    __tablename__ = "Choice"
+	    id = Column(Integer, primary_key=True)
+	    poll = Column(Integer, ForeignKey("Poll.id"), nullable=False)
+	    choice_text = Column(String)
+	    votes = Column(Integer)
+
+Step 2: In your app.py file paste the code to configure your database as below:
+
+    from apistar import App
+    from project.routes import routes
+    from project.models import Base
+
+    settings = {
+        "DATABASE": {
+    	    "URL": "sqlite:///db.sqlite3",
+                "METADATA": Base.metadata
+        }
+    }
+    app = App(routes=routes, settings=settings)
+    
+Step 3: Now that you have written all the code for your database, execute the command from your terminal.
+
+    $ apistar create_tables
+    Tables created
+    
+
+
+     
 
 
     
