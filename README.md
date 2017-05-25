@@ -154,17 +154,27 @@ For creating first poll, add the code snnipet in views.py
 	    session.add(poll)
 	    session.commit()
 	    return {'question': question}
+	    
+	def create_choices(db: SQLAlchemy, poll_id: int, choice_text: str):
+	    session = db.session_class()
+	    poll = session.query(Poll).get(poll_id)
+	    choice = Choice(poll=poll.id, choice_text=choice_text, votes=0)
+	    session.add(choice)
+	    session.commit()
+	    return {'choice_text': choice_text}
 
 **Routes**
 
 For providing the route for the function, first we call the create_poll in routes.py and create a route related to  as shown in the snnipet below
 
     from apistar import Include, Route
-    from project.views import  create_poll
+    from project.views import  create_poll, create_choices
     
     routes = [
         # API to create Polls
         Route('/create_poll', 'POST', create_poll)
+        # API to add choices to the polls
+        Route('/create_choices', 'POST', create_choices),
         ]
 
 **Run Code**
@@ -174,6 +184,13 @@ For providing the route for the function, first we call the create_poll in route
 You may use any REST client to test the API, created here.
 
 ![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/screen2.png)
+
+
+With every poll you create, you need to add choices with respect to it.
+
+![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/screen3.png)
+
+
 
     
 
