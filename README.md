@@ -30,6 +30,8 @@ be in sync with your codebase.
 - [Run Project](#runproject)
 - [Database configuration](#database)
 - [First Poll](#firstpoll)
+- [More Code](#morecode)
+- [Clone and Run](#clonerun)
 
 # Apistar Installation
 
@@ -188,7 +190,93 @@ You may use any REST client to test the API, created here.
 
 With every poll you create, you need to add choices with respect to it.
 
+
 ![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/screen3.png)
+
+
+# More Code
+
+**views**
+
+    ...
+    def polls(db: SQLAlchemy):
+        data = []
+        current_time = datetime.datetime.utcnow()
+        session = db.session_class()
+        polls = session.query(Poll).filter(Poll.pub_date < current_time)[:5]
+        for poll in polls:
+            poll_data = {}
+            poll_data['question'] = poll.question
+            poll_data['pub_date'] = str(poll.pub_date)
+            data.append(poll_data)
+        return {'polls': data}
+
+
+    def polls_details(db: SQLAlchemy):
+        data = []
+        cdata = []
+        session = db.session_class()
+        polls = session.query(Poll).all()
+        for poll in polls:
+            poll_data = {}
+            poll_data['question'] = poll.question
+            poll_data['pub_date'] = str(poll.pub_date)
+            if poll.choice:
+                for choice in poll.choice:
+                    choice_data = {}
+                    choice_data['id'] = choice.id
+                    choice_data['choice_text'] = choice.choice_text
+                    choice_data['votes'] = choice.votes
+                    cdata.append(choice_data)
+                poll_data['choice'] = cdata
+            data.append(poll_data)
+        return {'polls': data}
+
+    def vote(db: SQLAlchemy, poll_id: int, choice_id: int):
+        session = db.session_class()
+        poll = session.query(Poll).get(poll_id)
+        for option in poll.choice:
+            if option.id == choice_id:
+                choice = session.query(Choice).get(choice_id)
+                temp = int(choice.votes)
+                temp += 1
+                choice.votes = temp
+                session.add(choice)
+                result = 'Vote Added'
+            else:
+                result = 'Wrong Choice'
+            session.commit()
+        return {'result': result}
+        
+        
+**routes**
+    
+    ...
+    from project.views import welcome, create_poll, polls, polls_details, create_choices, vote
+
+    routes = [
+        ...
+        Route('/polls', 'GET', polls),
+        # API to show the details of polls
+        Route('/polls_details', 'GET', polls_details),
+        # API to cast the vote
+        Route('/vote', 'POST', vote)
+        ]
+
+
+By adding above code, you will be able to access, all the API's in the similar way as you get in Django Poll app.
+
+# Clone and Run
+
+By this time you will be aware of the flow of APISTAR. You can simply clone the project and run it locally on your machine.
+
+
+<p align="center"><i>APISTAR Poll Tutorial <a href="http://www.agiliq.com">agiliq.com</a><br/>Designed & built in Agiliq, India.</i><br/>&mdash; ⭐️ &mdash;</p>
+
+
+
+
+
 
 
 
