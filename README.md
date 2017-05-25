@@ -29,6 +29,7 @@ be in sync with your codebase.
 - [Apistar Architecture](#apistar_architecture)
 - [Run Project](#runproject)
 - [Database configuration](#database)
+- [First Poll](#firstpoll)
 
 # Apistar Installation
 
@@ -132,6 +133,48 @@ Step 3: Now that you have written all the code for your database, execute the co
 
     $ apistar create_tables
     Tables created
+    
+
+# First Poll
+
+Now that you have done your database configuration , the time comes to create your first poll. As we are not using django which gives us the flexibility of Django Admin so we depend on creating an endpoint for creating a Poll.
+
+We will be dealing with routes and views.
+
+**Views**
+
+For creating first poll, add the code snnipet in views.py
+
+    from apistar.backends import SQLAlchemy
+    from .models import Poll, Choice
+    
+    def create_poll(db: SQLAlchemy, question: str):
+	    session = db.session_class()
+	    poll = Poll(question=question)
+	    session.add(poll)
+	    session.commit()
+	    return {'question': question}
+
+**Routes**
+
+For providing the route for the function, first we call the create_poll in routes.py and create a route related to  as shown in the snnipet below
+
+    from apistar import Include, Route
+    from project.views import  create_poll
+    
+    routes = [
+        # API to create Polls
+        Route('/create_poll', 'POST', create_poll)
+        ]
+
+**Run Code**
+
+    $ apistar run
+
+You may use any REST client to test the API, created here.
+
+![ScreenShot](https://raw.githubusercontent.com/agiliq/apistar-polls-tutorial/master/screenshots/screen2.png)
+
     
 
 
